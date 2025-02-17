@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Game Center</string>
+    <string name="_2048">2048</string>
+    <string name="nonograma">Nonograma</string>
+</resources>
