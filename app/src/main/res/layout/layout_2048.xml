@@ -14,7 +14,6 @@
         android:id="@+id/reset"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.924"
@@ -39,7 +38,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/Allerta"
+        android:fontFamily="@font/allerta"
         android:text="2048"
         android:textColor="@color/black"
         android:textSize="50dp"
@@ -54,7 +53,7 @@
         android:id="@+id/puntuacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/Allerta"
+        android:fontFamily="@font/allerta"
         android:text="Puntuación: "
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +67,7 @@
         android:id="@+id/button_volver_2048"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/Allerta"
+        android:fontFamily="@font/allerta"
         android:text="Volver"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -82,7 +81,7 @@
         android:id="@+id/stepBack_2048"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/Allerta"
+        android:fontFamily="@font/allerta"
         android:text="Deshacer"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,7 +95,7 @@
         android:id="@+id/timer"
         android:layout_width="118dp"
         android:layout_height="39dp"
-        android:fontFamily="@font/Allerta"
+        android:fontFamily="@font/allerta"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +114,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.151"
-        app:srcCompat="@drawable/add_foreground"/>
+        />
 
     <ImageButton
         android:id="@+id/sub_size"
@@ -127,7 +126,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.151"
-        app:srcCompat="@mipmap/subs_foreground" />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
