@@ -17,6 +17,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -82,7 +83,6 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
 
     private void iniciarTablero() {
         TextView textView = findViewById(R.id.puntuacion);
-        textView.setText("Puntuación: " + this.puntuacion);
         GridLayout gridLayout = findViewById(R.id.layout2048);
         gridLayout.setColumnCount(columns);
         gridLayout.setRowCount(rows);
@@ -124,7 +124,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
             int y = (int) (Math.random() * columns);
             if (this.tablero[x][y].getText().equals("")) {
                 this.tablero[x][y].setText("2");
-                this.tablero[x][y].setBackgroundTintList(getResources().getColorStateList(R.color.color_2));
+                this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_2));
                 ocupado = true;
 
             } else {
@@ -136,6 +136,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                     ocupado = true;
                 } else if (!casillasVacias) {
                     perder();
+                    ocupado = true;
                 }
             }
         }
@@ -196,21 +197,97 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                 if (velocityX > 0) {
                     //Mover a la derecha
                     moverDerecha();
+                    generarNuevaFicha();
                 } else {
                     //Mover a la izquierda
                     moverIzquierda();
+                    generarNuevaFicha();
                 }
             } else {
                 if (velocityY > 0) {
                     // Mover abajo
                     moverAbajo();
+                    generarNuevaFicha();
                 } else {
                     // Mover arriba
                     moverArriba();
+                    generarNuevaFicha();
                 }
             }
         }
         return true;
+    }
+
+    private void moverArriba() {
+    }
+
+    private void moverAbajo() {
+    }
+
+    private void moverIzquierda() {
+    }
+
+    private void moverDerecha() {
+        // Recorrer matriz entera en busca de fichas que mover
+        for (int i = 0; i <= this.tablero.length - 1; i++) {
+            for (int j = this.tablero.length - 1; j >= 1; j--) {
+                // Si se encuentra una ficha, comprobar que a la derecha no hay nada
+                if (this.tablero[i][j].getText().equals("") && !this.tablero[i][j - 1].getText().equals("")){
+                    // Transferir valor de la casilla izquierda a la derecha
+                    this.tablero[i][j].setText(this.tablero[i][j - 1].getText());
+                    // Cambiar el valor de la casilla izquierda a nada
+                    this.tablero[i][j - 1].setText("");
+                    // Actualizar color de las casillas
+                    actualizarColor();
+                }
+            }
+        }
+    }
+
+    private void actualizarColor() {
+        for (int x = 0; x <= tablero.length - 1; x++){
+            for (int y = 0; y <= this.tablero.length -1; y++){
+                String valorFicha = String.valueOf(this.tablero[x][y].getText());
+                switch (valorFicha){
+                    case "2":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_2));
+                        break;
+                    case "4":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_4));
+                        break;
+                    case "8":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_8));
+                        break;
+                    case "16":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_16));
+                        break;
+                    case "32":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_32));
+                        break;
+                    case "64":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_64));
+                        break;
+                    case "128":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_128));
+                        break;
+                    case "256":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_256));
+                        break;
+                    case "512":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_512));
+                        break;
+                    case "1024":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_1024));
+                        break;
+                    case "2048":
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_2048));
+                        break;
+                    default:
+                        this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_0));
+
+                }
+            }
+        }
     }
 
     @Override

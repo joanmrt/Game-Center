@@ -2,8 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="fondo">#CDCCCB</color>
+    <color name="fondo">#FFFFD0</color>
     <color name="marron_claro">#c9785f</color>
+    <color name="amarillo">#FFD000</color>
     <color name="morado">#9e34eb</color>
     <color name="color_0">#CCAAAA</color>
     <color name="color_2">#FFE5B4</color>
@@ -17,4 +18,5 @@
     <color name="color_512">#844500</color>
     <color name="color_1024">#663300</color>
     <color name="color_2048">#472200</color>
+
 </resources>
