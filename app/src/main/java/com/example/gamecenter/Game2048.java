@@ -1,25 +1,37 @@
 package com.example.gamecenter;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Game2048 extends AppCompatActivity {
+public class Game2048 extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
     private Button[][] tablero;
     private Button[][] tableroAnterior;
     private String puntuacionString;
     private int puntuacion;
-    private boolean partidaGanada;
+    private boolean partidaAcabada;
     private int columns = 4;
     private int rows = 4;
+    private int textSizeDefault = 20;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +44,11 @@ public class Game2048 extends AppCompatActivity {
             return insets;
         });
 
+        // ASIGNAR VARIABLES Y LISTENERS DE BOTONES
         Button volver = findViewById(R.id.button_volver_2048);
         Button deshacer = findViewById(R.id.stepBack_2048);
         ImageButton restart = findViewById(R.id.reset);
+        gestureDetector = new GestureDetector(this, this);
 
         volver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +70,111 @@ public class Game2048 extends AppCompatActivity {
                 reiniciar();
             }
         });
+        
+        empezarJuego();
 
+    }
+
+    private void empezarJuego() {
+        iniciarTablero();
+        generarNuevaFicha();
+    }
+
+    private void iniciarTablero() {
+        TextView textView = findViewById(R.id.puntuacion);
+        textView.setText("Puntuación: " + this.puntuacion);
+        GridLayout gridLayout = findViewById(R.id.layout2048);
+        gridLayout.setColumnCount(columns);
+        gridLayout.setRowCount(rows);
+        this.tablero = new Button[rows][columns];
+        this.tableroAnterior = new Button[rows][columns];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                this.tablero[row][col] = iniciarBoton(row, col, gridLayout);
+            }
+        }
+    }
+
+    private Button iniciarBoton(int row, int col, GridLayout gridLayout) {
+        Button button = new Button(this);
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+
+        params.width = 270;
+        params.height = 270;
+        button.setTextSize(textSizeDefault);
+        params.columnSpec = GridLayout.spec(col, 1f);
+        params.rowSpec = GridLayout.spec(row, 1f);
+        params.setGravity(Gravity.CENTER);
+
+
+        button.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.color_0)));
+        button.setTextColor(Color.BLACK);
+        button.setClickable(false);
+
+        button.setLayoutParams(params);
+        gridLayout.addView(button);
+
+        return button;
+    }
+
+    private void generarNuevaFicha() {
+        boolean ocupado = false;
+        while (!ocupado){
+            int x = (int) (Math.random() * rows);
+            int y = (int) (Math.random() * columns);
+            if (this.tablero[x][y].getText().equals("")) {
+                this.tablero[x][y].setText("2");
+                this.tablero[x][y].setBackgroundTintList(getResources().getColorStateList(R.color.color_2));
+                ocupado = true;
+
+            } else {
+                boolean casillasVacias = comprobarCasillasVacia();
+                boolean victoria = comprobarVictoria();
+
+                if (victoria){
+                    ganar();
+                    ocupado = true;
+                } else if (!casillasVacias) {
+                    perder();
+                }
+            }
+        }
+    }
+
+    private void ganar() {
+        partidaAcabada = true;
+    }
+
+    private void perder() {
+        partidaAcabada = true;
+
+    }
+
+    // Comprueba si hay alguna casilla vacia aun en el tablero
+    private boolean comprobarCasillasVacia() {
+        for (int x = 0; x <= tablero.length - 1; x++){
+            for (int y = 0; y <= this.tablero.length -1; y++){
+                if (this.tablero[x][y].getText().equals("")){
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
+    private boolean comprobarVictoria(){
+        for (int x = 0; x <= tablero.length - 1; x++){
+            for (int y = 0; y <= this.tablero.length -1; y++){
+                if (this.tablero[x][y].getText().equals("2048")){
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
     }
 
     private void reiniciar() {
@@ -64,4 +182,61 @@ public class Game2048 extends AppCompatActivity {
 
     private void deshacer() {
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onFling(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+        if (!partidaAcabada){
+            if (Math.abs(velocityX) > Math.abs(velocityY)) {
+
+                if (velocityX > 0) {
+                    //Mover a la derecha
+                    moverDerecha();
+                } else {
+                    //Mover a la izquierda
+                    moverIzquierda();
+                }
+            } else {
+                if (velocityY > 0) {
+                    // Mover abajo
+                    moverAbajo();
+                } else {
+                    // Mover arriba
+                    moverArriba();
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onDown(@NonNull MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(@NonNull MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(@NonNull MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(@NonNull MotionEvent e) {
+
+    }
+
+
 }
