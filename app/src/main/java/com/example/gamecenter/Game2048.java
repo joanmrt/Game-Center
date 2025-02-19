@@ -24,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Game2048 extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
+    // Primera parte de la matriz es el eje vertical, el segundo es el horizontal
     private Button[][] tablero;
     private Button[][] tableroAnterior;
     private String puntuacionString;
@@ -176,6 +177,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
         }
 
         return false;
+
     }
 
     private void reiniciar() {
@@ -219,26 +221,94 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     }
 
     private void moverArriba() {
+        boolean mover = true;
+        // Hacer movimiento mientras haya mas espacio arriba
+        while (mover) {
+            mover = false;
+            // Recorrer matriz entera en busca de fichas que mover
+            for (int i = 0; i <= this.tablero.length -2 ; i++) {
+                for (int j = 0; j <= this.tablero.length - 1; j++) {
+                    // Si se encuentra una ficha, comprobar que a arriba no hay nada
+                    if (this.tablero[i][j].getText().equals("") && !this.tablero[i + 1][j].getText().equals("")) {
+                        mover = true;
+                        // Transferir valor de la casilla de abajo a la de arriba
+                        this.tablero[i][j].setText(this.tablero[i + 1][j].getText());
+                        // Cambiar el valor de la casilla de abajo a nada
+                        this.tablero[i + 1][j].setText("");
+                        // Actualizar color de las casillas
+                        actualizarColor();
+                    }
+                }
+            }
+        }
     }
 
     private void moverAbajo() {
+        boolean mover = true;
+        // Hacer movimiento mientras haya mas espacio abajo
+        while (mover) {
+            mover = false;
+            // Recorrer matriz entera en busca de fichas que mover
+            for (int i = this.tablero.length - 1; i >= 1; i--) {
+                for (int j = 0; j <= this.tablero.length - 1; j++) {
+                    // Si se encuentra una ficha, comprobar que a abajo no hay nada
+                    if (this.tablero[i][j].getText().equals("") && !this.tablero[i - 1][j].getText().equals("")) {
+                        mover = true;
+                        // Transferir valor de la casilla de arriba a la de abajo
+                        this.tablero[i][j].setText(this.tablero[i - 1][j].getText());
+                        // Cambiar el valor de la casilla de arriba a nada
+                        this.tablero[i - 1][j].setText("");
+                        // Actualizar color de las casillas
+                        actualizarColor();
+                    }
+                }
+            }
+        }
     }
 
     private void moverIzquierda() {
+        boolean mover = true;
+        // Hacer movimiento mientras haya mas espacio a la izquierda
+        while (mover) {
+            mover = false;
+            // Recorrer matriz entera en busca de fichas que mover
+            for (int i = 0; i <= this.tablero.length - 1; i++) {
+                for (int j = 0; j <= this.tablero.length - 2; j++) {
+                    // Si se encuentra una ficha, comprobar que a la izquierda no hay nada
+                    if (this.tablero[i][j].getText().equals("") && !this.tablero[i][j + 1].getText().equals("")) {
+                        mover = true;
+                        // Transferir valor de la casilla derecha a la izquierda
+                        this.tablero[i][j].setText(this.tablero[i][j + 1].getText());
+                        // Cambiar el valor de la casilla derecha a nada
+                        this.tablero[i][j + 1].setText("");
+                        // Actualizar color de las casillas
+                        actualizarColor();
+                    }
+                }
+            }
+        }
     }
 
     private void moverDerecha() {
-        // Recorrer matriz entera en busca de fichas que mover
-        for (int i = 0; i <= this.tablero.length - 1; i++) {
-            for (int j = this.tablero.length - 1; j >= 1; j--) {
-                // Si se encuentra una ficha, comprobar que a la derecha no hay nada
-                if (this.tablero[i][j].getText().equals("") && !this.tablero[i][j - 1].getText().equals("")){
-                    // Transferir valor de la casilla izquierda a la derecha
-                    this.tablero[i][j].setText(this.tablero[i][j - 1].getText());
-                    // Cambiar el valor de la casilla izquierda a nada
-                    this.tablero[i][j - 1].setText("");
-                    // Actualizar color de las casillas
-                    actualizarColor();
+        boolean mover = true;
+        // Hacer movimiento mientras haya mas espacio a la derecha
+        while (mover) {
+            mover = false;
+            // Recorrer matriz entera en busca de fichas que mover
+            for (int i = 0; i <= this.tablero.length - 1; i++) {
+                for (int j = this.tablero.length - 1; j >= 1; j--) {
+                    // Si se encuentra una ficha, comprobar que a la derecha no hay nada
+                    if (this.tablero[i][j].getText().equals("") && !this.tablero[i][j - 1].getText().equals("")) {
+                        mover = true;
+                        // Transferir valor de la casilla izquierda a la derecha
+                        this.tablero[i][j].setText(this.tablero[i][j - 1].getText());
+                        // Cambiar el valor de la casilla izquierda a nada
+                        this.tablero[i][j - 1].setText("");
+                        // Actualizar color de las casillas
+                        actualizarColor();
+                    } else if (this.tablero[i][j].getText().equals(this.tablero[i][j - 1].getText())) {
+                        
+                    }
                 }
             }
         }
