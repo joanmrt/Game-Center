@@ -133,5 +133,20 @@
         app:layout_constraintVertical_bias="0.151"
         />
 
+    <TextView
+        android:id="@+id/partida_acabada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/allerta"
+        app:layout_constraintTop_toBottomOf="@id/layout2048"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginTop="20dp"
+        android:gravity="center" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

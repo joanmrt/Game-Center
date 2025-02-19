@@ -3,6 +3,7 @@ package com.example.gamecenter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -27,12 +27,11 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     // Primera parte de la matriz es el eje vertical, el segundo es el horizontal
     private Button[][] tablero;
     private Button[][] tableroAnterior;
-    private String puntuacionString;
-    private int puntuacion;
+    private int puntuacion = 0;
     private boolean partidaAcabada;
-    private int columns = 4;
-    private int rows = 4;
-    private int textSizeDefault = 20;
+    private final int columns = 4;
+    private final int rows = 4;
+    private final int textSizeDefault = 20;
     private GestureDetector gestureDetector;
 
     @Override
@@ -83,7 +82,6 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     }
 
     private void iniciarTablero() {
-        TextView textView = findViewById(R.id.puntuacion);
         GridLayout gridLayout = findViewById(R.id.layout2048);
         gridLayout.setColumnCount(columns);
         gridLayout.setRowCount(rows);
@@ -120,6 +118,19 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
 
     private void generarNuevaFicha() {
         boolean ocupado = false;
+
+        if (comprobarVictoria()){
+            ganar();
+            return;
+        }
+        if (!comprobarCasillasVacia() && !posibleMovimiento()){
+            perder();
+            return;
+        }
+        if (!comprobarCasillasVacia() && posibleMovimiento()){
+            ocupado = true;
+        }
+
         while (!ocupado){
             int x = (int) (Math.random() * rows);
             int y = (int) (Math.random() * columns);
@@ -128,28 +139,46 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                 this.tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_2));
                 ocupado = true;
 
-            } else {
-                boolean casillasVacias = comprobarCasillasVacia();
-                boolean victoria = comprobarVictoria();
-
-                if (victoria){
-                    ganar();
-                    ocupado = true;
-                } else if (!casillasVacias) {
-                    perder();
-                    ocupado = true;
-                }
             }
+            Log.e("prueba", "loop");
         }
     }
 
     private void ganar() {
         partidaAcabada = true;
+        TextView partidaAcabada = findViewById(R.id.partida_acabada);
+        partidaAcabada.setText("You Win!");
     }
 
     private void perder() {
         partidaAcabada = true;
-
+        TextView partidaAcabada = findViewById(R.id.partida_acabada);
+        partidaAcabada.setText("You Lose...");
+    }
+    // Comprobar si aún existen posibles movimientos
+    private boolean posibleMovimiento() {
+        for (int x = 0; x <= tablero.length - 1; x++){
+            for (int y = 0; y < this.tablero[0].length; y++){
+                String valor = String.valueOf(this.tablero[x][y].getText());
+                //Comprobar valor arriba
+                if (x > 0 && this.tablero[x - 1][y].getText().toString().equals(valor)) {
+                    return true;
+                }
+                // Comprobar valor abajo
+                if (x < tablero.length - 1 && this.tablero[x + 1][y].getText().toString().equals(valor)) {
+                    return true;
+                }
+                // Comprobar valor izquierda
+                if (y > 0 && this.tablero[x][y - 1].getText().toString().equals(valor)) {
+                    return true;
+                }
+                // Comprobar valor derecha
+                if (y < tablero[0].length - 1 && this.tablero[x][y + 1].getText().toString().equals(valor)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // Comprueba si hay alguna casilla vacia aun en el tablero
@@ -160,9 +189,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                     return true;
                 }
             }
-
         }
-
         return false;
     }
 
@@ -178,6 +205,13 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
 
         return false;
 
+    }
+
+    //Suma la puntuacion y la actualiza
+    private void sumarPuntos(int puntos){
+        puntuacion += puntos;
+        TextView puntuacionView = findViewById(R.id.puntuacion);
+        puntuacionView.setText("Score: " + puntuacion);
     }
 
     private void reiniciar() {
@@ -226,7 +260,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
         while (mover) {
             mover = false;
             // Recorrer matriz entera en busca de fichas que mover
-            for (int i = 0; i <= this.tablero.length -2 ; i++) {
+            for (int i = 0; i <= this.tablero.length - 2; i++) {
                 for (int j = 0; j <= this.tablero.length - 1; j++) {
                     // Si se encuentra una ficha, comprobar que a arriba no hay nada
                     if (this.tablero[i][j].getText().equals("") && !this.tablero[i + 1][j].getText().equals("")) {
@@ -236,6 +270,15 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                         // Cambiar el valor de la casilla de abajo a nada
                         this.tablero[i + 1][j].setText("");
                         // Actualizar color de las casillas
+                        actualizarColor();
+                    }
+                    // Comprobar que la ficha actual y la anterior tienen el mismo valor para juntarlas
+                    else if (this.tablero[i + 1][j].getText().equals(this.tablero[i][j].getText()) && !this.tablero[i + 1][j].getText().equals("")) {
+                        String valorString = String.valueOf(this.tablero[i][j].getText());
+                        int valor = Integer.parseInt(valorString);
+                        this.tablero[i][j].setText(String.valueOf(valor*2));
+                        this.tablero[i + 1][j].setText("");
+                        sumarPuntos(valor*2);
                         actualizarColor();
                     }
                 }
@@ -261,6 +304,15 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                         // Actualizar color de las casillas
                         actualizarColor();
                     }
+                    // Comprobar que la ficha actual y la anterior tienen el mismo valor para juntarlas
+                    else if (this.tablero[i - 1][j].getText().equals(this.tablero[i][j].getText()) && !this.tablero[i - 1][j].getText().equals("")) {
+                        String valorString = String.valueOf(this.tablero[i][j].getText());
+                        int valor = Integer.parseInt(valorString);
+                        this.tablero[i][j].setText(String.valueOf(valor*2));
+                        this.tablero[i - 1][j].setText("");
+                        sumarPuntos(valor*2);
+                        actualizarColor();
+                    }
                 }
             }
         }
@@ -282,6 +334,15 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                         // Cambiar el valor de la casilla derecha a nada
                         this.tablero[i][j + 1].setText("");
                         // Actualizar color de las casillas
+                        actualizarColor();
+                    }
+                    // Comprobar que la ficha actual y la anterior tienen el mismo valor para juntarlas
+                    else if (this.tablero[i][j + 1].getText().equals(this.tablero[i][j].getText()) && !this.tablero[i][j + 1].getText().equals("")) {
+                        String valorString = String.valueOf(this.tablero[i][j].getText());
+                        int valor = Integer.parseInt(valorString);
+                        this.tablero[i][j].setText(String.valueOf(valor*2));
+                        this.tablero[i][j + 1].setText("");
+                        sumarPuntos(valor*2);
                         actualizarColor();
                     }
                 }
@@ -306,14 +367,23 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                         this.tablero[i][j - 1].setText("");
                         // Actualizar color de las casillas
                         actualizarColor();
-                    } else if (this.tablero[i][j].getText().equals(this.tablero[i][j - 1].getText())) {
-                        
+
+                    }
+                    // Comprobar que la ficha actual y la anterior tienen el mismo valor para juntarlas
+                    else if (this.tablero[i][j - 1].getText().equals(this.tablero[i][j].getText()) && !this.tablero[i][j - 1].getText().equals("")) {
+                        String valorString = String.valueOf(this.tablero[i][j].getText());
+                        int valor = Integer.parseInt(valorString);
+                        this.tablero[i][j].setText(String.valueOf(valor*2));
+                        this.tablero[i][j - 1].setText("");
+                        sumarPuntos(valor*2);
+                        actualizarColor();
                     }
                 }
             }
         }
     }
 
+    //Actualiza el color de los botones del tablero por valor
     private void actualizarColor() {
         for (int x = 0; x <= tablero.length - 1; x++){
             for (int y = 0; y <= this.tablero.length -1; y++){
