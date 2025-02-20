@@ -28,6 +28,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     private Button[][] tablero;
     private Button[][] tableroAnterior;
     private int puntuacion = 0;
+    private int puntuacionAnterior = 0;
     private boolean partidaAcabada;
     private final int columns = 4;
     private final int rows = 4;
@@ -215,9 +216,45 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     }
 
     private void reiniciar() {
+        puntuacion = 0;
+        partidaAcabada = false;
+        TextView puntuacionView = findViewById(R.id.puntuacion);
+        puntuacionView.setText("Score: " + puntuacion);
+
+        for (int x = 0; x < rows; x++) {
+            for (int y = 0; y < columns; y++) {
+                tablero[x][y].setText("");
+                tablero[x][y].setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.color_0));
+            }
+        }
+
+        generarNuevaFicha();
     }
 
     private void deshacer() {
+        for (int x = 0; x < rows; x++) {
+            for (int y = 0; y < columns; y++) {
+                tablero[x][y].setText(tableroAnterior[x][y].getText());
+                tablero[x][y].setBackgroundTintList(tableroAnterior[x][y].getBackgroundTintList());
+            }
+        }
+        actualizarColor();
+        TextView puntuacionView = findViewById(R.id.puntuacion);
+        puntuacionView.setText("Score: " + puntuacionAnterior);
+        int puntuacionCopia = puntuacionAnterior;
+        puntuacion = puntuacionCopia;
+    }
+
+    private void copiarTableroAnterior(){
+        for (int x = 0; x <= tablero.length - 1; x++){
+            for (int y = 0; y <= this.tablero.length -1; y++){
+                Button button = new Button(this);
+                button.setText(this.tablero[x][y].getText());
+                this.tableroAnterior[x][y] = button;
+            }
+        }
+        int puntuacionCopia = puntuacion;
+        puntuacionAnterior = puntuacionCopia;
     }
 
     @Override
@@ -232,20 +269,24 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
 
                 if (velocityX > 0) {
                     //Mover a la derecha
+                    copiarTableroAnterior();
                     moverDerecha();
                     generarNuevaFicha();
                 } else {
                     //Mover a la izquierda
+                    copiarTableroAnterior();
                     moverIzquierda();
                     generarNuevaFicha();
                 }
             } else {
                 if (velocityY > 0) {
                     // Mover abajo
+                    copiarTableroAnterior();
                     moverAbajo();
                     generarNuevaFicha();
                 } else {
                     // Mover arriba
+                    copiarTableroAnterior();
                     moverArriba();
                     generarNuevaFicha();
                 }
