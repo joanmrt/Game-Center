@@ -80,6 +80,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     private void empezarJuego() {
         iniciarTablero();
         generarNuevaFicha();
+        copiarTableroAnterior();
     }
 
     private void iniciarTablero() {
@@ -147,13 +148,13 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
 
     private void ganar() {
         partidaAcabada = true;
-        TextView partidaAcabada = findViewById(R.id.partida_acabada);
+        TextView partidaAcabada = findViewById(R.id.partida_acabada_2048);
         partidaAcabada.setText("You Win!");
     }
 
     private void perder() {
         partidaAcabada = true;
-        TextView partidaAcabada = findViewById(R.id.partida_acabada);
+        TextView partidaAcabada = findViewById(R.id.partida_acabada_2048);
         partidaAcabada.setText("You Lose...");
     }
     // Comprobar si aún existen posibles movimientos
@@ -211,15 +212,18 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     //Suma la puntuacion y la actualiza
     private void sumarPuntos(int puntos){
         puntuacion += puntos;
-        TextView puntuacionView = findViewById(R.id.puntuacion);
+        TextView puntuacionView = findViewById(R.id.puntuacion_2048);
         puntuacionView.setText("Score: " + puntuacion);
     }
 
     private void reiniciar() {
+        copiarTableroAnterior();
         puntuacion = 0;
         partidaAcabada = false;
-        TextView puntuacionView = findViewById(R.id.puntuacion);
+        TextView puntuacionView = findViewById(R.id.puntuacion_2048);
+        TextView particaAcabadaView = findViewById(R.id.partida_acabada_2048);
         puntuacionView.setText("Score: " + puntuacion);
+        particaAcabadaView.setText("");
 
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < columns; y++) {
@@ -239,7 +243,7 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
             }
         }
         actualizarColor();
-        TextView puntuacionView = findViewById(R.id.puntuacion);
+        TextView puntuacionView = findViewById(R.id.puntuacion_2048);
         puntuacionView.setText("Score: " + puntuacionAnterior);
         int puntuacionCopia = puntuacionAnterior;
         puntuacion = puntuacionCopia;

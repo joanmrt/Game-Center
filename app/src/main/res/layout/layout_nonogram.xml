@@ -5,6 +5,275 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameNonogram">
+    android:layout_gravity="center"
+    android:background="@color/fondo">
+
+
+    <ImageButton
+        android:id="@+id/reset_nonogram"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:contentDescription="Reset Button"
+        android:src="@drawable/baseline_refresh_24"
+        android:backgroundTint="@color/amarillo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintStart_toEndOf="@+id/title_nonogram"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.138" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_tablero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65">
+
+        <GridLayout
+            android:id="@+id/layout_nonogram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/marron_claro"
+            android:columnCount="5"
+            android:orientation="horizontal"
+            android:rowCount="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/columns_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/layout_nonogram"
+            app:layout_constraintEnd_toEndOf="@id/layout_nonogram"
+            app:layout_constraintStart_toStartOf="@id/layout_nonogram">
+
+            <TextView
+                android:id="@+id/column1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/column2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/column3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/column4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="1\n6"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/column5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rows_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/layout_nonogram"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/row1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/row2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/row3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/row4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/row5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/allerta"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="50sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/partida_acabada_nonogram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/allerta"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_nonogram" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <GridLayout
+        android:id="@+id/layout_nonogram_solucion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/marron_claro"
+        android:columnCount="5"
+        android:orientation="horizontal"
+        android:rowCount="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="15dp"/>
+
+
+    <TextView
+        android:id="@+id/title_nonogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/allerta"
+        android:text="Nonogram"
+        android:textColor="@color/black"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <TextView
+        android:id="@+id/puntuacion_nonogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/allerta"
+        android:text="Score: 0"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_nonogram"
+        app:layout_constraintVertical_bias="0.046" />
+
+    <Button
+        android:id="@+id/button_volver_nonogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/allerta"
+        android:text="Go back"
+        android:backgroundTint="@color/amarillo"
+        android:textColor="@color/black"
+        app:cornerRadius="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.029" />
+
+    <Button
+        android:id="@+id/stepBack_nonogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/allerta"
+        android:text="Undo"
+        android:backgroundTint="@color/amarillo"
+        android:textColor="@color/black"
+        app:cornerRadius="2dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.549"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.029" />
+
+    <TextView
+        android:id="@+id/timerBar"
+        android:layout_width="118dp"
+        android:layout_height="39dp"
+        android:fontFamily="@font/allerta"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.234" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

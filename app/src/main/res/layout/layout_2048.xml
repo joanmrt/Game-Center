@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/fondo"
-    >
+    android:background="@color/fondo">
 
 
     <ImageButton
@@ -54,12 +53,13 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/puntuacion"
+        android:id="@+id/puntuacion_2048"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/allerta"
         android:text="Score: 0"
         android:textSize="20dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -113,7 +113,7 @@
         app:layout_constraintVertical_bias="0.234" />
 
     <TextView
-        android:id="@+id/partida_acabada"
+        android:id="@+id/partida_acabada_2048"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
