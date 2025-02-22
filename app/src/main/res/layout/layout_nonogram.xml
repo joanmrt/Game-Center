@@ -63,9 +63,10 @@
                 android:layout_marginEnd="28dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
-                android:text="0"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                android:lineSpacingExtra="-20sp"/>
 
             <TextView
                 android:id="@+id/column2"
@@ -74,9 +75,10 @@
                 android:layout_marginEnd="28dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
-                android:text="0"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                android:lineSpacingExtra="-20sp"/>
 
             <TextView
                 android:id="@+id/column3"
@@ -85,9 +87,10 @@
                 android:layout_marginEnd="28dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
-                android:text="0"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                android:lineSpacingExtra="-20sp"/>
 
             <TextView
                 android:id="@+id/column4"
@@ -96,7 +99,7 @@
                 android:layout_marginEnd="28dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
-                android:text="1\n6"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="50sp"
                 android:lineSpacingExtra="-20sp"/>
@@ -107,9 +110,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
-                android:text="0"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                android:lineSpacingExtra="-20sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -117,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:textAlignment="viewEnd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/layout_nonogram"
             app:layout_constraintTop_toTopOf="parent"
@@ -127,18 +132,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/allerta"
-                android:gravity="center"
-                android:text="0 5"
+                android:textAlignment="viewEnd"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                />
 
             <TextView
                 android:id="@+id/row2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/allerta"
-                android:gravity="center"
-                android:text="0"
+                android:textAlignment="viewEnd"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="50sp" />
 
@@ -147,8 +153,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/allerta"
-                android:gravity="center"
-                android:text="0"
+                android:textAlignment="viewEnd"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="50sp" />
 
@@ -157,8 +163,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/allerta"
-                android:gravity="center"
-                android:text="0"
+                android:textAlignment="viewEnd"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="50sp" />
 
@@ -167,8 +173,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/allerta"
-                android:gravity="center"
-                android:text="0"
+                android:textAlignment="viewEnd"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="50sp" />
         </LinearLayout>

@@ -110,9 +110,17 @@ public class GameNonogram extends AppCompatActivity {
             for (int col = 0; col < columns; col++) {
                 int colorTablero = getColorFromBackground(tablero[row][col]);
                 int colorSolucion = getColorFromBackground(tableroSolucion[row][col]);
+                // Comprobar el valor del integer del color de la casilla (-16777216 para negro, -1 para blanco y -65536 para rojo)
+                // Comprobar si el valor es diferente de la solucion, ignorando el color rojo
 
-                if (colorTablero != colorSolucion) {
-                    return false; // Mismatch found
+                // Si la casilla solucion es negra y la del tablero no es negra, no esta solucionado
+                if (colorSolucion == -16777216 && colorTablero != -16777216) {
+                    return false;
+                }
+
+                // Si la casilla solucion es blanca y la del tablero es negra no esta solucionado, ignora las rojas
+                if (colorSolucion == -1 && (colorTablero == -16777216)) {
+                    return false; // Hay una casilla negra donde no deberia
                 }
             }
         }
@@ -125,13 +133,16 @@ public class GameNonogram extends AppCompatActivity {
         if (tile.getBackground() instanceof ColorDrawable) {
             return ((ColorDrawable) tile.getBackground()).getColor();
         }
-        return Color.TRANSPARENT; // Default in case of no color
+        return Color.TRANSPARENT;
     }
 
+    // Rotar entre los 3 colores en este orden: Blanco>Negro>Rojo
     private void toggleColor(TextView tile) {
         if (!partidaAcabada) {
-            if (tile.getBackground() != null && ((android.graphics.drawable.ColorDrawable) tile.getBackground()).getColor() == Color.BLACK) {
+            if (tile.getBackground() != null && ((android.graphics.drawable.ColorDrawable) tile.getBackground()).getColor() == Color.RED) {
                 tile.setBackgroundColor(Color.WHITE);
+            } else if (tile.getBackground() != null && ((android.graphics.drawable.ColorDrawable) tile.getBackground()).getColor() == Color.BLACK) {
+                tile.setBackgroundColor(Color.RED);
             } else {
                 tile.setBackgroundColor(Color.BLACK);
             }
@@ -171,6 +182,8 @@ public class GameNonogram extends AppCompatActivity {
 
 
         iniciarTableroSolucion();
+        calcularPistasFilas();
+        calcularPistasColumnas();
     }
 
     private void iniciarTableroSolucion() {
@@ -204,7 +217,72 @@ public class GameNonogram extends AppCompatActivity {
         }
     }
 
+    private void calcularPistasFilas(){
+        int[] filasViews = {R.id.row1, R.id.row2, R.id.row3, R.id.row4, R.id.row5};
+
+        for (int row = 0; row < rows; row++) {
+            StringBuilder textoFila = new StringBuilder();
+            int contador = 0;
+            boolean entrado = false;
+            for (int col = 0; col < columns; col++) {
+                int casillaActual = getColorFromBackground(this.tablero[row][col]);
+
+                // Comprobar el valor del integer del color de la casilla (-16777216 para negro y -1 para blanco)
+                if (casillaActual == -16777216) {
+                    contador++;
+                    entrado = true;
+                }
+                // Primera casilla blanca encontrada despues de haber encontrado blancas
+                else if (casillaActual == -1 && contador > 0) {
+                    textoFila.append(" ").append(contador);
+                    contador = 0;
+                }
+            }
+            if (!entrado) {
+                textoFila.append("0");
+            }
+            if (contador > 0) {
+                textoFila.append(" ").append(contador);
+            }
+            TextView filaView = findViewById(filasViews[row]);
+            filaView.setText(textoFila.toString());
+        }
+    }
+
+    private void calcularPistasColumnas(){
+        int[] columnasViews = {R.id.column1, R.id.column2, R.id.column3, R.id.column4, R.id.column5};
+
+        for (int col = 0; col < columns; col++) {
+            StringBuilder textoColumna = new StringBuilder();
+            int contador = 0;
+            boolean entrado = false;
+            for (int row = 0; row < rows; row++) {
+                int casillaActual = getColorFromBackground(this.tablero[row][col]);
+
+                // Comprobar el valor del integer del color de la casilla (-16777216 para negro y -1 para blanco)
+                if (casillaActual == -16777216) {
+                    contador++;
+                    entrado = true;
+                }
+                // Primera casilla blanca encontrada despues de haber encontrado blancas
+                else if (casillaActual == -1 && contador > 0) {
+                    textoColumna.append("\n").append(contador);
+                    contador = 0;
+                }
+            }
+            if (!entrado) {
+                textoColumna.append("0");
+            }
+            if (contador > 0) {
+                textoColumna.append("\n").append(contador);
+            }
+            TextView columnaView = findViewById(columnasViews[col]);
+            columnaView.setText(textoColumna.toString());
+        }
+    }
+
 
     private void reiniciar() {
+
     }
 }
