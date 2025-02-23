@@ -25,9 +25,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_tablero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
@@ -60,7 +61,7 @@
                 android:id="@+id/column1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="35dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
                 android:lineSpacingExtra="-20sp"
@@ -72,7 +73,7 @@
                 android:id="@+id/column2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="35dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
                 android:lineSpacingExtra="-20sp"
@@ -84,7 +85,7 @@
                 android:id="@+id/column3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="35dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
                 android:lineSpacingExtra="-20sp"
@@ -96,7 +97,7 @@
                 android:id="@+id/column4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="35dp"
                 android:fontFamily="@font/allerta"
                 android:gravity="center"
                 android:lineSpacingExtra="-20sp"
@@ -264,36 +265,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.029" />
-
-    <Button
-        android:id="@+id/stepBack_nonogram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/allerta"
-        android:text="Undo"
-        android:backgroundTint="@color/amarillo"
-        android:textColor="@color/black"
-        app:cornerRadius="2dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.549"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.029" />
-
-    <TextView
-        android:id="@+id/timerBar"
-        android:layout_width="118dp"
-        android:layout_height="39dp"
-        android:fontFamily="@font/allerta"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.234" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

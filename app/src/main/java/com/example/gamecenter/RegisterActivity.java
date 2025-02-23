@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Check if passwords match
+        // Comprobar si las contraseñas coinciden
         if (!contrasenaString.equals(contrasenaRepetidaString)) {
             resultView.setText("The passwords do not match.");
             return;

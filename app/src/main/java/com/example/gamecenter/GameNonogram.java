@@ -3,8 +3,6 @@ package com.example.gamecenter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -99,9 +97,9 @@ public class GameNonogram extends AppCompatActivity {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
-                final int r = row, c = col; // Final variables for click listener
+                final int r = row, c = col;
 
-                // Create a new TextView as a tile
+                // Crear textview como casilla
                 TextView tile = new TextView(this);
                 tile.setLayoutParams(new GridLayout.LayoutParams());
                 tile.setWidth(150);
@@ -122,7 +120,7 @@ public class GameNonogram extends AppCompatActivity {
                     }
                 });
 
-                // Add tile to array and GridLayout
+                // añadir casilla a la array
                 tablero[row][col] = tile;
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = 150;
@@ -137,6 +135,7 @@ public class GameNonogram extends AppCompatActivity {
         }
     }
 
+    // Suma 1 punto y añade tiempo al contador por puzzle correcto
     private void sumarPuntos() {
         puntuacion++;
         TextView puntuacionView = findViewById(R.id.puntuacion_nonogram);
@@ -191,10 +190,10 @@ public class GameNonogram extends AppCompatActivity {
         int maxTiles = 20;
         int minTiles = 11;
 
-        // Generate a random number of black tiles (between 7 and 20)
-        int blackTilesCount = random.nextInt(maxTiles-minTiles) + minTiles; // 14 (range) + 7 (minimum) = [7, 20]
+        // Genera numero aleatorio de casillas de la solucion
+        int blackTilesCount = random.nextInt(maxTiles-minTiles) + minTiles;
 
-        // Create a list of all possible tile positions
+        // Crear lista de todas las posibles posiciones
         ArrayList<int[]> positions = new ArrayList<>();
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
@@ -202,7 +201,7 @@ public class GameNonogram extends AppCompatActivity {
             }
         }
 
-        // Shuffle the positions randomly
+        // Mezclar la lista de posiciones
         Collections.shuffle(positions, random);
 
         for (int row = 0; row < rows; row++) {
@@ -212,7 +211,7 @@ public class GameNonogram extends AppCompatActivity {
                 tableroSolucion[row][col] = tile;
             }
         }
-        // Pick the first `blackTilesCount` positions and set them to black
+        // Escoge la primera blackTilesCount y la pinta de negro
         for (int i = 0; i < blackTilesCount; i++) {
             int[] pos = positions.get(i);
             int row = pos[0], col = pos[1];
@@ -220,7 +219,7 @@ public class GameNonogram extends AppCompatActivity {
         }
 
 
-        iniciarTableroSolucion();
+        //iniciarTableroSolucion();
         calcularPistasFilas();
         calcularPistasColumnas();
     }
@@ -340,7 +339,6 @@ public class GameNonogram extends AppCompatActivity {
             columnaView.setText(textoColumna.toString());
         }
     }
-
 
     private void reiniciar() {
         gameTimer.pararTimer();
