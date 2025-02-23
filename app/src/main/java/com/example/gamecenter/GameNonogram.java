@@ -3,10 +3,13 @@ package com.example.gamecenter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +29,8 @@ public class GameNonogram extends AppCompatActivity {
     private TextView[][] tablero;
     private TextView[][] tableroSolucion;
     private boolean partidaAcabada;
+    private GameTimer gameTimer;
+    private int puntuacion = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,9 @@ public class GameNonogram extends AppCompatActivity {
 
         Button volver = findViewById(R.id.button_volver_nonogram);
         ImageButton restart = findViewById(R.id.reset_nonogram);
+        ProgressBar timerProgressBar = findViewById(R.id.progressBar_nonogram);
+
+        gameTimer = new GameTimer(timerProgressBar, 100, this);
         partidaAcabada = false;
         this.tablero = new TextView[rows][columns];
         this.tableroSolucion = new TextView[rows][columns];
@@ -62,8 +70,28 @@ public class GameNonogram extends AppCompatActivity {
     }
 
     private void empezarJuego() {
-        generarSolucionAleatoria();
         iniciarTablero();
+        generarSolucionAleatoria();
+        inicarTimer();
+    }
+
+    private void inicarTimer(){
+        Thread timerThread = new Thread(gameTimer);
+        timerThread.start();
+    }
+
+    public void acabarPartida(){
+        partidaAcabada = true;
+        TextView partidaAcabada = findViewById(R.id.partida_acabada_nonogram);
+        partidaAcabada.setText("Time!");
+    }
+
+    private void vaciarTablero(){
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                this.tablero[row][col].setBackgroundColor(Color.WHITE);
+            }
+        }
     }
 
     private void iniciarTablero() {
@@ -86,7 +114,11 @@ public class GameNonogram extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         toggleColor(tablero[r][c]);
-                        partidaAcabada = comprobarSolucion();
+                        if (comprobarSolucion()){
+                            sumarPuntos();
+                            vaciarTablero();
+                            generarSolucionAleatoria();
+                        }
                     }
                 });
 
@@ -103,6 +135,13 @@ public class GameNonogram extends AppCompatActivity {
                 tableroGrid.addView(tile);
             }
         }
+    }
+
+    private void sumarPuntos() {
+        puntuacion++;
+        TextView puntuacionView = findViewById(R.id.puntuacion_nonogram);
+        puntuacionView.setText("Score: " + puntuacion);
+        this.gameTimer.addTiempo(20);
     }
 
     private boolean comprobarSolucion() {
@@ -124,8 +163,6 @@ public class GameNonogram extends AppCompatActivity {
                 }
             }
         }
-        TextView partidaAcabada = findViewById(R.id.partida_acabada_nonogram);
-        partidaAcabada.setText("You Win!");
         return true;
     }
 
@@ -151,9 +188,11 @@ public class GameNonogram extends AppCompatActivity {
 
     private void generarSolucionAleatoria() {
         Random random = new Random();
+        int maxTiles = 20;
+        int minTiles = 11;
 
         // Generate a random number of black tiles (between 7 and 20)
-        int blackTilesCount = random.nextInt(14) + 7; // 14 (range) + 7 (minimum) = [7, 20]
+        int blackTilesCount = random.nextInt(maxTiles-minTiles) + minTiles; // 14 (range) + 7 (minimum) = [7, 20]
 
         // Create a list of all possible tile positions
         ArrayList<int[]> positions = new ArrayList<>();
@@ -203,7 +242,7 @@ public class GameNonogram extends AppCompatActivity {
                 tile.setGravity(android.view.Gravity.CENTER);
 
                 // Add tile to array and GridLayout
-                tablero[row][col] = tile;
+                tableroSolucion[row][col] = tile;
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = 50;
                 params.height = 50;
@@ -223,9 +262,10 @@ public class GameNonogram extends AppCompatActivity {
         for (int row = 0; row < rows; row++) {
             StringBuilder textoFila = new StringBuilder();
             int contador = 0;
+            boolean primerNumero = true;
             boolean entrado = false;
             for (int col = 0; col < columns; col++) {
-                int casillaActual = getColorFromBackground(this.tablero[row][col]);
+                int casillaActual = getColorFromBackground(this.tableroSolucion[row][col]);
 
                 // Comprobar el valor del integer del color de la casilla (-16777216 para negro y -1 para blanco)
                 if (casillaActual == -16777216) {
@@ -234,15 +274,24 @@ public class GameNonogram extends AppCompatActivity {
                 }
                 // Primera casilla blanca encontrada despues de haber encontrado blancas
                 else if (casillaActual == -1 && contador > 0) {
-                    textoFila.append(" ").append(contador);
-                    contador = 0;
+                    if (primerNumero){
+                        textoFila.append(contador);
+                        primerNumero = false;
+                        contador = 0;
+                    }
+                    else {
+                        textoFila.append(" ").append(contador);
+                        contador = 0;
+                    }
                 }
+            }
+            if (contador > 0 && primerNumero) {
+                textoFila.append(contador);
+            } else if (contador > 0) {
+                textoFila.append(" ").append(contador);
             }
             if (!entrado) {
                 textoFila.append("0");
-            }
-            if (contador > 0) {
-                textoFila.append(" ").append(contador);
             }
             TextView filaView = findViewById(filasViews[row]);
             filaView.setText(textoFila.toString());
@@ -255,9 +304,10 @@ public class GameNonogram extends AppCompatActivity {
         for (int col = 0; col < columns; col++) {
             StringBuilder textoColumna = new StringBuilder();
             int contador = 0;
+            boolean primerNumero = true;
             boolean entrado = false;
             for (int row = 0; row < rows; row++) {
-                int casillaActual = getColorFromBackground(this.tablero[row][col]);
+                int casillaActual = getColorFromBackground(this.tableroSolucion[row][col]);
 
                 // Comprobar el valor del integer del color de la casilla (-16777216 para negro y -1 para blanco)
                 if (casillaActual == -16777216) {
@@ -266,15 +316,25 @@ public class GameNonogram extends AppCompatActivity {
                 }
                 // Primera casilla blanca encontrada despues de haber encontrado blancas
                 else if (casillaActual == -1 && contador > 0) {
-                    textoColumna.append("\n").append(contador);
-                    contador = 0;
+                    if (primerNumero){
+                        textoColumna.append(contador);
+                        primerNumero = false;
+                        contador = 0;
+                    }
+                    else {
+                        textoColumna.append("\n").append(contador);
+                        contador = 0;
+                    }
+
                 }
             }
-            if (!entrado) {
-                textoColumna.append("0");
-            }
-            if (contador > 0) {
+            if (contador > 0 && primerNumero) {
+                textoColumna.append(contador);
+            } else if (contador > 0) {
                 textoColumna.append("\n").append(contador);
+            }
+            if (!entrado) {
+                textoColumna.append(0);
             }
             TextView columnaView = findViewById(columnasViews[col]);
             columnaView.setText(textoColumna.toString());
@@ -283,6 +343,16 @@ public class GameNonogram extends AppCompatActivity {
 
 
     private void reiniciar() {
+        gameTimer.pararTimer();
+        puntuacion = 0;
+        partidaAcabada = false;
+        TextView puntuacionView = findViewById(R.id.puntuacion_nonogram);
+        TextView particaAcabadaView = findViewById(R.id.partida_acabada_nonogram);
+        puntuacionView.setText("Score: " + puntuacion);
+        particaAcabadaView.setText("");
 
+        vaciarTablero();
+        generarSolucionAleatoria();
+        inicarTimer();
     }
 }
