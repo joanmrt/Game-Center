@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+    UserOpenHelper userOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button loginButton = findViewById(R.id.btn_login);
+        TextView registerView = findViewById(R.id.tv_signup);
+        userOpenHelper = new UserOpenHelper(this);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        registerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void login(){
@@ -44,13 +56,29 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, MenuActivity.class);
             startActivity(intent);
         }
-        else if (!userExists){
-
-            Toast userDoesntExist = Toast.makeText(this, "User doesn't exist", Toast.LENGTH_SHORT);
-        }
     }
 
     private boolean checkUser() {
-        return true;
+        EditText usuarioEditText = findViewById(R.id.et_username);
+        EditText passwordEditText = findViewById(R.id.et_password);
+        TextView resultView = findViewById(R.id.tv_result);
+
+        String usuarioString = usuarioEditText.getText().toString().trim();
+        String contrasenaString = passwordEditText.getText().toString().trim();
+
+
+        if (usuarioString.isEmpty() || contrasenaString.isEmpty()) {
+            resultView.setText("Username and password cannot be empty.");
+            return false;
+        }
+
+        User nuevoUsuario = new User(usuarioString, contrasenaString);
+        boolean encontrado = userOpenHelper.findUser(nuevoUsuario);
+
+        if (!encontrado) {
+            resultView.setText("User not found.");
+        }
+
+        return encontrado;
     }
 }

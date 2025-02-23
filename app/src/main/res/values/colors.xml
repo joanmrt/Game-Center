@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="fondo">#FFFFD0</color>
+    <color name="rojo">#E43922</color>
     <color name="marron_claro">#F1BC7C</color>
     <color name="amarillo">#FFD000</color>
     <color name="morado">#9e34eb</color>
