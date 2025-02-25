@@ -34,6 +34,8 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
     private final int rows = 4;
     private final int textSizeDefault = 20;
     private GestureDetector gestureDetector;
+    private UserOpenHelper userOpenHelper;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,9 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
         Button deshacer = findViewById(R.id.stepBack_2048);
         ImageButton restart = findViewById(R.id.reset);
         gestureDetector = new GestureDetector(this, this);
+        userOpenHelper = new UserOpenHelper(this);
+        currentUser = (User) getIntent().getSerializableExtra("user");
+
 
         volver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,12 +155,18 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
         partidaAcabada = true;
         TextView partidaAcabada = findViewById(R.id.partida_acabada_2048);
         partidaAcabada.setText("You Win!");
+        subirPuntuacion();
     }
 
     private void perder() {
         partidaAcabada = true;
         TextView partidaAcabada = findViewById(R.id.partida_acabada_2048);
         partidaAcabada.setText("You Lose...");
+        subirPuntuacion();
+    }
+    private void subirPuntuacion(){
+        Score score = new Score(currentUser.getUsername(),"2048", puntuacion);
+        userOpenHelper.addScore(score);
     }
     // Comprobar si aún existen posibles movimientos
     private boolean posibleMovimiento() {

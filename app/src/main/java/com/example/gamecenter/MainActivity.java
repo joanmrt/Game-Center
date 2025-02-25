@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
     UserOpenHelper userOpenHelper;
-
+    User currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         userExists = checkUser();
         if (userExists){
             Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+            intent.putExtra("user", currentUser);
             startActivity(intent);
         }
     }
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (!encontrado) {
             resultView.setText("User not found.");
+        }
+        else {
+            currentUser = nuevoUsuario;
         }
 
         return encontrado;

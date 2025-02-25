@@ -49,5 +49,19 @@
             android:textColor="@color/black"
             app:cornerRadius="2dp"
             android:text="@string/nonograma" />
+
+        <Button
+            android:id="@+id/buttonRanking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:fontFamily="@font/allerta"
+            android:backgroundTint="@color/amarillo"
+            android:text="Ranking"
+            android:textColor="@color/black"
+            android:layout_marginVertical="50sp"
+            app:cornerRadius="2dp"
+            />
+
     </LinearLayout>
 </RelativeLayout>

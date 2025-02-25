@@ -3,6 +3,7 @@ package com.example.gamecenter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -29,6 +30,8 @@ public class GameNonogram extends AppCompatActivity {
     private boolean partidaAcabada;
     private GameTimer gameTimer;
     private int puntuacion = 0;
+    private UserOpenHelper userOpenHelper;
+    private User currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,9 @@ public class GameNonogram extends AppCompatActivity {
         Button volver = findViewById(R.id.button_volver_nonogram);
         ImageButton restart = findViewById(R.id.reset_nonogram);
         ProgressBar timerProgressBar = findViewById(R.id.progressBar_nonogram);
+        userOpenHelper = new UserOpenHelper(this);
+        currentUser = (User) getIntent().getSerializableExtra("user");
+
 
         gameTimer = new GameTimer(timerProgressBar, 100, this);
         partidaAcabada = false;
@@ -82,6 +88,12 @@ public class GameNonogram extends AppCompatActivity {
         partidaAcabada = true;
         TextView partidaAcabada = findViewById(R.id.partida_acabada_nonogram);
         partidaAcabada.setText("Time!");
+        subirPuntuacion();
+    }
+
+    private void subirPuntuacion(){
+        Score score = new Score(currentUser.getUsername(),"nonogram", puntuacion);
+        userOpenHelper.addScore(score);
     }
 
     private void vaciarTablero(){

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo">
+
+    <TextView
+        android:id="@+id/ranking_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:fontFamily="@font/allerta"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_marginTop="50sp"
+        android:text="Rankings" />
+
+    <LinearLayout
+        android:id="@+id/ranking_2048"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/ranking_title"
+        android:layout_margin="40sp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2048"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/allerta"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ranking_nonogram"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="40sp"
+        android:layout_below="@+id/ranking_2048">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nonogram"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:fontFamily="@font/allerta"/>
+    </LinearLayout>
+</RelativeLayout>
