@@ -147,7 +147,6 @@ public class Game2048 extends AppCompatActivity implements GestureDetector.OnGes
                 ocupado = true;
 
             }
-            Log.e("prueba", "loop");
         }
     }
 
